@@ -1,4 +1,24 @@
 const faqList = [
+
+
+
+
+{ question: "houssem ben ahmed", response: "Houssem Ben Ahmed est un étudiant en sciences informatiques, passionné par la programmation et la technologie. Il est également le créateur de l'IA HBA." },
+    { question: "nationalité de Houssem", response: "Houssem Ben Ahmed est de nationalité tunisienne." },
+    { question: "age de houssem", response: "Houssem a 19 ans." },
+    { question: "intérêts de houssem", response: "Houssem est passionné par l'informatique, la programmation, et le développement de projets en intelligence artificielle." },
+    { question: "étudie houssem", response: "Houssem est étudiant dans un programme en sciences informatiques dans ISI KEF." },
+    { question: "projets de houssem", response: "Houssem travaille sur divers projets, y compris la création de l'IA HBA, qui peut répondre aux questions et aider les utilisateurs dans divers domaines." },
+    { question: "pourquoi houssem a-t-il créé HBA", response: "Houssem a créé HBA pour explorer le domaine de l'intelligence artificielle et pour fournir une assistance simple aux utilisateurs." },
+    { question: "objectif de houssem", response: "L'objectif de Houssem est de développer ses compétences en IA et en programmation tout en créant des projets utiles aux autres." },
+    { question: "la date de création de hba", response: "HBA a été créé le 28 octobre 2024 par Houssem Ben Ahmed." },
+    { question: "pourquoi houssem a créé hba", response: "Houssem a créé HBA pour explorer le domaine de l'intelligence artificielle et pour fournir une assistance simple aux utilisateurs." },
+
+
+
+
+
+        
         // Suggestions supplémentaires
         { question: "tesla", response: "Tesla est une entreprise fondée par Elon Musk, spécialisée dans la production de véhicules électriques, les batteries et l'énergie solaire." },
         { question: "qu'est ce que python", response: "Python est un langage de programmation populaire, apprécié pour sa simplicité et son efficacité, utilisé dans l'analyse de données, le développement web, et l'intelligence artificielle." },
@@ -94,7 +114,6 @@ const faqList = [
     { question: "whatsapp", response: "Ok, c'est un outil de communication à distance créé par Mark Zuckerberg..." },
     { question: "messenger", response: "Ok, c'est un outil de communication à distance créé par Mark Zuckerberg..." },
     { question: "votre objectif", response: "C'est une bonne question. J'ai été créé pour garantir votre satisfaction et répondre à n'importe quelle question si je la connais..." },
-    { question: "houssem", response: "Ok, c'est mon créateur. C'est un étudiant en sciences informatiques de nationalité tunisienne, 19 ans..." },
     {question: "rayan" , response: "bien sur, cest lami de mon createur , il est de nationalite tunisienne et francaise , il a 10 ans et son anniversaire le 18 décembre,il etude au college fenelon et habite dans SAUNT4AUBIN LES ELBEUF ?il adore ces jeux:pokemon,bakougan et il aime cristiano ronaldo et mbappe et aussi il adore les spaghetti , si vous aimez ces information dit extra !"},
     {question: "extra", response: "je suis ravi mon ami raytchou !"},
     {question: "rayen" , response: "bien sur, cest lami de mon createur , il est de nationalite tunisienne et francaise , il a 10 ans et son anniversaire le 18 décembre,il etude au college fenelon et habite dans SAUNT4AUBIN LES ELBEUF ?il adore ces jeux:pokemon,bakougan et il aime cristiano ronaldo et mbappe et aussi il adore les spaghetti , si vous aimez ces information dit extra !"},
