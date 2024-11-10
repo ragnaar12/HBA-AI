@@ -17,7 +17,7 @@ const faqList = [
     { question: "votre programeur", response: " c'est Houssem Ben Ahmed." },
 { question: "c'est qui houssem", response: "Houssem Ben Ahmed est un étudiant en sciences informatiques, passionné par la programmation et la technologie. Il est également le créateur de l'IA HBA. " },
 { question: "houssem", response: "Houssem Ben Ahmed est un étudiant en sciences informatiques, passionné par la programmation et la technologie. Il est également le créateur de l'IA HBA. " },
-
+ { question: "hba", response: " HBA-AI est une application web innovante développée par Houssem Ben Ahmed, qui utilise des algorithmes d'intelligence artificielle pour exécuter des tâches complexes et fournir des solutions instantanées. Le projet repose sur un programme écrit en C pour garantir des performances optimales, tandis que l'interface utilisateur est développée avec des technologies web comme HTML, CSS, et JavaScript. Le but de HBA-AI est de rendre l'intelligence artificielle accessible à un large public, en offrant une plateforme intuitive et facile à utiliser pour résoudre des problèmes complexes en temps réel." },
         
         // Suggestions supplémentaires
         { question: "tesla", response: "Tesla est une entreprise fondée par Elon Musk, spécialisée dans la production de véhicules électriques, les batteries et l'énergie solaire." },
