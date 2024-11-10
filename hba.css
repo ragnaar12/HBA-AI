@@ -11,7 +11,7 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-image: url(Bureau/hba siteweb/images.jpg); /* Remplacez par le chemin de votre image */
+  background-image: url(Bureau\hba siteweb\images.jpg); /* Remplacez par le chemin de votre image */
   background-size: cover; /* L'image couvrira toute la zone */
   background-position: center; /* L'image sera centrée */
   background-attachment: fixed; /* L'image restera fixe lorsqu'on fait défiler la page */
