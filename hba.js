@@ -334,8 +334,9 @@ const faqList = [
             { question: "william shakespeare", response: "William Shakespeare était un dramaturge et poète anglais, considéré comme l'un des plus grands écrivains de tous les temps. Il a écrit des pièces comme 'Roméo et Juliette' et 'Hamlet'." },
             { question: "christopher columbus", response: "Christophe Colomb était un explorateur italien, célèbre pour avoir 'découvert' l'Amérique en 1492, bien qu'il n'ait pas été le premier à atteindre ce continent." },    
 
-            { question: "Qui es-tu ?", response: "Je suis HBA, un assistant virtuel créé pour répondre à vos questions et vous aider avec des informations variées." },
-            { question: "Comment ça marche ?", response: "Il suffit de me poser une question, et je ferai de mon mieux pour y répondre. Vous pouvez poser des questions sur n'importe quel sujet !" },
+    { question: "qui est tu ?", response: "Je suis HBA, un assistant virtuel créé pour répondre à vos questions et vous aider avec des informations variées." },
+            { question: "qui es-tu ?", response: "Je suis HBA, un assistant virtuel créé pour répondre à vos questions et vous aider avec des informations variées." },
+            { question: "comment ça marche ?", response: "Il suffit de me poser une question, et je ferai de mon mieux pour y répondre. Vous pouvez poser des questions sur n'importe quel sujet !" },
             { question: "tu faire", response: "Je peux répondre à des questions, donner des informations sur divers sujets, discuter de différents thèmes, et même vous donner des conseils ou des recommandations." },
             { question: "t'utiliser", response: "Il suffit de poser une question et j'y répondrai de manière aussi précise et utile que possible !" },
             { question: "Peux-tu m'aider avec mes devoirs", response: "Je peux vous fournir des informations pour vous aider à comprendre vos devoirs, mais je ne peux pas faire les devoirs à votre place." },
