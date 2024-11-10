@@ -15,8 +15,8 @@ const faqList = [
 { question: "qui est houssem", response: "Houssem Ben Ahmed est un étudiant en sciences informatiques, passionné par la programmation et la technologie. Il est également le créateur de l'IA HBA. " },
 { question: "votre createur", response: "c'est houssem ben ahmed." },
     { question: "votre programeur", response: " c'est Houssem Ben Ahmed." },
-
-
+{ question: "c'est qui houssem", response: "Houssem Ben Ahmed est un étudiant en sciences informatiques, passionné par la programmation et la technologie. Il est également le créateur de l'IA HBA. " },
+{ question: "houssem", response: "Houssem Ben Ahmed est un étudiant en sciences informatiques, passionné par la programmation et la technologie. Il est également le créateur de l'IA HBA. " },
 
         
         // Suggestions supplémentaires
