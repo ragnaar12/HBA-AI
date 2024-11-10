@@ -2,7 +2,6 @@ const faqList = [
 
 
 
-
 { question: "houssem ben ahmed", response: "Houssem Ben Ahmed est un étudiant en sciences informatiques, passionné par la programmation et la technologie. Il est également le créateur de l'IA HBA." },
     { question: "nationalité de Houssem", response: "Houssem Ben Ahmed est de nationalité tunisienne." },
     { question: "age de houssem", response: "Houssem a 19 ans." },
@@ -13,8 +12,9 @@ const faqList = [
     { question: "objectif de houssem", response: "L'objectif de Houssem est de développer ses compétences en IA et en programmation tout en créant des projets utiles aux autres." },
     { question: "la date de création de hba", response: "HBA a été créé le 28 octobre 2024 par Houssem Ben Ahmed." },
     { question: "pourquoi houssem a créé hba", response: "Houssem a créé HBA pour explorer le domaine de l'intelligence artificielle et pour fournir une assistance simple aux utilisateurs." },
-
-
+{ question: "qui est houssem", response: "Houssem Ben Ahmed est un étudiant en sciences informatiques, passionné par la programmation et la technologie. Il est également le créateur de l'IA HBA. " },
+{ question: "votre createur", response: "c'est houssem ben ahmed." },
+    { question: "votre programeur", response: " c'est Houssem Ben Ahmed." },
 
 
 
