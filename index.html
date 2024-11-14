@@ -1,31 +1,30 @@
-
 <!DOCTYPE html>
-<html lang="en">
-  
-
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HBA-AI Chatbot</title>
-    <link rel="hba" href="hba.css">
+    <title>Analyse de texte</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
-<div id="response-area">
-  <!-- Les réponses du chatbot s'afficheront ici -->
-</div>
 <body>
-
     <div class="container">
-        <h1>Welcome to HBA-AI Chatbot!</h1>
-        <div id="chatbox">
-            <div id="response-area">
-                <!-- AI responses will appear here -->
-            </div>
+        <h1>Analyse de texte</h1>
+        <textarea id="inputText" placeholder="Entrez votre texte ici..." rows="10" cols="50"></textarea>
+        <button id="analyzeBtn">Analyser</button>
+
+        <div id="syntaxResult">
+            <h2>Analyse syntaxique</h2>
+            <ul id="syntaxList"></ul>
         </div>
 
-        <input type="text" id="userInput" placeholder="Ask me anything...">
-        <button onclick="getResponse()">Send</button>
+        <div id="sentimentResult">
+            <h2>Analyse de sentiment</h2>
+            <p id="sentiment"></p>
+            <p id="confidence"></p>
+        </div>
     </div>
 
-    <script src="hba.py"></script>
+    <script src="script.js"></script>
 </body>
 </html>
+
