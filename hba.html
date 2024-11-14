@@ -1,1 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBA-AI Chatbot</title>
+    <link rel="hba" href="hba.css">
+</head>
+<div id="response-area">
+  <!-- Les réponses du chatbot s'afficheront ici -->
+</div>
+<body>
+
+    <div class="container">
+        <h1>Welcome to HBA-AI Chatbot!</h1>
+        <div id="chatbox">
+            <div id="response-area">
+                <!-- AI responses will appear here -->
+            </div>
+        </div>
+
+        <input type="text" id="userInput" placeholder="Ask me anything...">
+        <button onclick="getResponse()">Send</button>
+    </div>
+
+    <script src="hba.py"></script>
+</body>
+</html>
