@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Assistant DeepSeek</title>
+    <title>Assistant UniSign</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -109,7 +109,7 @@
     </style>
 </head>
 <body>
-    <h1>Assistan UniSign</h1>
+    <h1>Assistant UniSign</h1>
     <div id="chat-container">
         <div id="chatbox"></div>
         <div id="input-container">
@@ -119,20 +119,15 @@
     </div>
 
     <script>
-        // Configuration
-        const API_KEY = "wAvYs5lGKpvlLVMvUyutowewoNzsYxN8WAJ9GsUh"; // Remplacez par votre clé valide
-        const API_URL = "const API_URL = "https:/api.cohere.ai/v1/chat";
-";
-        
-        // Éléments du DOM
+        const API_KEY = "wAvYs5lGKpvlLVMvUyutowewoNzsYxN8WAJ9GsUh"; // ⚠️ à ne pas exposer en production
+        const API_URL = "https://api.cohere.ai/v1/chat";
+
         const chatbox = document.getElementById('chatbox');
         const userInput = document.getElementById('userInput');
         const sendButton = document.getElementById('sendButton');
-        
-        // Ajouter un message au chat
+
         function addMessage(sender, content, isError = false) {
             const messageDiv = document.createElement('div');
-            
             if (isError) {
                 messageDiv.className = 'error-message';
                 messageDiv.textContent = content;
@@ -140,27 +135,23 @@
                 messageDiv.className = `${sender}-message message`;
                 messageDiv.innerHTML = content;
             }
-            
             chatbox.appendChild(messageDiv);
             chatbox.scrollTop = chatbox.scrollHeight;
         }
-        
-        // Envoyer un message à l'API
+
         async function sendMessage() {
             const message = userInput.value.trim();
             if (!message) return;
-            
-            // Afficher le message de l'utilisateur
+
             addMessage('user', message);
             userInput.value = '';
-            
-            // Afficher l'indicateur de réponse en cours
+
             const typingIndicator = document.createElement('div');
             typingIndicator.className = 'typing-indicator';
             typingIndicator.textContent = "Assistant rédige sa réponse...";
             chatbox.appendChild(typingIndicator);
             chatbox.scrollTop = chatbox.scrollHeight;
-            
+
             try {
                 const response = await fetch(API_URL, {
                     method: 'POST',
@@ -169,36 +160,27 @@
                         'Authorization': `Bearer ${API_KEY}`
                     },
                     body: JSON.stringify({
-                        model: "deepseek-chat",
-                        messages: [{ role: "user", content: message }],
+                        model: "command-r",
+                        message: message,
                         temperature: 0.7,
                         max_tokens: 1000
                     })
                 });
-                
-                if (!response.ok) {
-                    throw new Error(`Erreur HTTP ${response.status}`);
-                }
-                
+
                 const data = await response.json();
-                
-                // Vérification de la structure de réponse
-                if (!data?.choices?.[0]?.message?.content) {
-                    throw new Error("Réponse inattendue de l'API");
+                chatbox.removeChild(typingIndicator);
+
+                if (!data?.text) {
+                    throw new Error("Réponse vide ou inattendue");
                 }
-                
-                // Supprimer l'indicateur et afficher la réponse
-                chatbox.removeChild(typingIndicator);
-                addMessage('bot', data.choices[0].message.content);
-                
+
+                addMessage('bot', data.text);
             } catch (error) {
-                console.error("Erreur:", error);
                 chatbox.removeChild(typingIndicator);
-                addMessage('bot', `Désolé, une erreur est survenue: ${error.message}`, true);
+                addMessage('bot', `Erreur : ${error.message}`, true);
             }
         }
-        
-        // Événements
+
         sendButton.addEventListener('click', sendMessage);
         userInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') sendMessage();
@@ -206,3 +188,4 @@
     </script>
 </body>
 </html>
+
