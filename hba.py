@@ -35,6 +35,23 @@ def analyze():
 
     return jsonify(response)
 
+import openai
+
+openai.api_key = "sk-..."  # clé mta3ek men OpenAI
+
+def interagir_avec_chatgpt(message):
+    response = openai.ChatCompletion.create(
+        model="gpt-4",  # ou "gpt-3.5-turbo"
+        messages=[
+            {"role": "user", "content": message}
+        ]
+    )
+    return response["choices"][0]["message"]["content"]
+
+# Exemple :
+print(interagir_avec_chatgpt("Bonjour, comment tu t'appelles ?"))
+
+
 if __name__ == '__main__':
     app.run(debug=True)
 
