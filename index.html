@@ -1,30 +1,43 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analyse de texte</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chatbot HBA</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; background: #f2f2f2; }
+    #chatbox { max-width: 600px; margin: auto; background: #fff; padding: 20px; border-radius: 10px; }
+    .message { margin: 10px 0; }
+    .user { color: blue; }
+    .bot { color: green; }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Analyse de texte</h1>
-        <textarea id="inputText" placeholder="Entrez votre texte ici..." rows="10" cols="50"></textarea>
-        <button id="analyzeBtn">Analyser</button>
+  <div id="chatbox">
+    <h2>HBA Chatbot</h2>
+    <div id="messages"></div>
+    <input type="text" id="input" placeholder="Écris ici..." style="width: 80%;" />
+    <button onclick="sendMessage()">Envoyer</button>
+  </div>
 
-        <div id="syntaxResult">
-            <h2>Analyse syntaxique</h2>
-            <ul id="syntaxList"></ul>
-        </div>
+  <script>
+    async function sendMessage() {
+      const input = document.getElementById("input");
+      const userMessage = input.value;
+      if (!userMessage) return;
 
-        <div id="sentimentResult">
-            <h2>Analyse de sentiment</h2>
-            <p id="sentiment"></p>
-            <p id="confidence"></p>
-        </div>
-    </div>
+      document.getElementById("messages").innerHTML += `<div class="message"><strong class="user">Vous:</strong> ${userMessage}</div>`;
+      input.value = "";
 
-    <script src="script.js"></script>
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: userMessage })
+      });
+
+      const data = await response.json();
+      document.getElementById("messages").innerHTML += `<div class="message"><strong class="bot">HBA-AI:</strong> ${data.reply}</div>`;
+    }
+  </script>
 </body>
 </html>
-
