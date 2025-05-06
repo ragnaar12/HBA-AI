@@ -1,28 +1,106 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>DeepSeek Direct</title>
+    <title>Assistant DeepSeek</title>
     <style>
-        body { font-family: Arial; padding: 20px; }
-        #reponse { margin-top: 20px; white-space: pre-wrap; }
-        textarea { width: 100%; height: 100px; }
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        #chat-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        #chatbox {
+            height: 500px;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .message {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .user-message {
+            background-color: #e3f2fd;
+            margin-left: 20%;
+        }
+        .bot-message {
+            background-color: #f5f5f5;
+            margin-right: 20%;
+        }
+        .error-message {
+            background-color: #ffebee;
+            color: #d32f2f;
+        }
+        #input-container {
+            display: flex;
+            padding: 15px;
+            background-color: #f0f2f5;
+            border-top: 1px solid #e0e3e7;
+        }
+        #userInput {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        #sendButton {
+            background-color: #4a6bff;
+            color: white;
+            border: none;
+            padding: 0 25px;
+            margin-left: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
-    <h1>DeepSeek Direct</h1>
-    <textarea id="question" placeholder="Votre question..."></textarea>
-    <button onclick="poserQuestion()">Envoyer</button>
-    <div id="reponse"></div>
+    <h1 style="color: #4a6bff; text-align: center;">Assistant DeepSeek</h1>
+    <div id="chat-container">
+        <div id="chatbox"></div>
+        <div id="input-container">
+            <input type="text" id="userInput" placeholder="Posez votre question..." autocomplete="off">
+            <button id="sendButton">Envoyer</button>
+        </div>
+    </div>
 
     <script>
-        const API_KEY = "sk-ee127fe5fa2f40959d2c50749e905f87"; // Votre clé
-        
-        async function poserQuestion() {
-            const question = document.getElementById("question").value;
-            const elementReponse = document.getElementById("reponse");
-            
-            elementReponse.innerHTML = "Chargement...";
-            
+        const API_KEY = "sk-ee127fe5fa2f40959d2c50749e905f87"; // Votre clé API
+        const chatbox = document.getElementById('chatbox');
+        const userInput = document.getElementById('userInput');
+        const sendButton = document.getElementById('sendButton');
+
+        function addMessage(sender, content, isError = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}-message ${isError ? 'error-message' : ''}`;
+            messageDiv.innerHTML = `<strong>${sender === 'user' ? 'Vous' : 'Assistant'}:</strong> ${content}`;
+            chatbox.appendChild(messageDiv);
+            chatbox.scrollTop = chatbox.scrollHeight;
+        }
+
+        async function sendMessage() {
+            const message = userInput.value.trim();
+            if (!message) return;
+
+            userInput.value = '';
+            addMessage('user', message);
+
+            // Afficher l'indicateur de typing
+            const typingIndicator = document.createElement('div');
+            typingIndicator.className = 'message bot-message';
+            typingIndicator.innerHTML = '<em>Assistant rédige sa réponse...</em>';
+            chatbox.appendChild(typingIndicator);
+            chatbox.scrollTop = chatbox.scrollHeight;
+
             try {
                 const response = await fetch("https://api.deepseek.com/v1/chat/completions", {
                     method: "POST",
@@ -32,17 +110,38 @@
                     },
                     body: JSON.stringify({
                         model: "deepseek-chat",
-                        messages: [{role: "user", content: question}],
-                        temperature: 0.7
+                        messages: [{role: "user", content: message}],
+                        temperature: 0.7,
+                        max_tokens: 1000
                     })
                 });
-                
+
+                if (!response.ok) {
+                    throw new Error(`Erreur HTTP: ${response.status}`);
+                }
+
                 const data = await response.json();
-                elementReponse.innerHTML = data.choices[0].message.content;
+                
+                // Vérification approfondie de la réponse
+                if (!data.choices || !data.choices[0] || !data.choices[0].message) {
+                    throw new Error("Structure de réponse inattendue de l'API");
+                }
+
+                chatbox.removeChild(typingIndicator);
+                addMessage('bot', data.choices[0].message.content);
+
             } catch (error) {
-                elementReponse.innerHTML = `Erreur: ${error.message}`;
+                chatbox.removeChild(typingIndicator);
+                addMessage('bot', `Désolé, une erreur est survenue: ${error.message}`, true);
+                console.error("Erreur détaillée:", error);
             }
         }
+
+        // Gestion des événements
+        sendButton.addEventListener('click', sendMessage);
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
     </script>
 </body>
 </html>
