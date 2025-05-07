@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Assistant UniSign</title>
     <style>
+        /* Global Styling */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             max-width: 800px;
@@ -12,51 +13,81 @@
             padding: 20px;
             background-color: #f5f7fa;
             color: #333;
+            line-height: 1.6;
         }
+
         h1 {
             color: #4a6bff;
             text-align: center;
             margin-bottom: 30px;
+            font-size: 2.5rem;
         }
+
+        /* Chat Container */
         #chat-container {
             background-color: white;
-            border-radius: 10px;
+            border-radius: 15px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
+
+        /* Chatbox Styling */
         #chatbox {
             height: 500px;
             padding: 20px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 20px;
+            scrollbar-width: thin;
+            scrollbar-color: #4a6bff #f5f7fa;
         }
+
+        #chatbox::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #chatbox::-webkit-scrollbar-thumb {
+            background-color: #4a6bff;
+            border-radius: 5px;
+        }
+
+        #chatbox::-webkit-scrollbar-track {
+            background-color: #f5f7fa;
+        }
+
         .message {
             max-width: 80%;
-            padding: 12px 16px;
+            padding: 15px 20px;
             border-radius: 18px;
-            line-height: 1.5;
             word-wrap: break-word;
+            font-size: 1rem;
         }
+
         .user-message {
             align-self: flex-end;
             background-color: #4a6bff;
             color: white;
-            border-bottom-right-radius: 4px;
+            border-radius: 18px 4px 18px 18px;
         }
+
         .bot-message {
             align-self: flex-start;
             background-color: #f0f2f5;
             color: #333;
-            border-bottom-left-radius: 4px;
+            border-radius: 4px 18px 18px 18px;
         }
+
         .typing-indicator {
             align-self: flex-start;
             color: #666;
             font-style: italic;
             padding: 10px 20px;
+            font-size: 0.9rem;
         }
+
         .error-message {
             color: #d32f2f;
             background-color: #ffebee;
@@ -65,24 +96,31 @@
             text-align: center;
             margin: 10px 0;
         }
+
+        /* Input Container */
         #input-container {
             display: flex;
             padding: 15px;
             background-color: #f8f9fa;
             border-top: 1px solid #e0e3e7;
+            border-radius: 0 0 15px 15px;
         }
+
         #userInput {
             flex: 1;
-            padding: 12px 15px;
+            padding: 12px 20px;
             border: 1px solid #ddd;
             border-radius: 25px;
             font-size: 16px;
             outline: none;
-            transition: border 0.3s;
+            transition: border 0.3s, box-shadow 0.3s;
         }
+
         #userInput:focus {
             border-color: #4a6bff;
+            box-shadow: 0 0 5px rgba(74, 107, 255, 0.3);
         }
+
         #sendButton {
             background-color: #4a6bff;
             color: white;
@@ -92,18 +130,27 @@
             border-radius: 25px;
             cursor: pointer;
             font-size: 16px;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, transform 0.2s;
         }
+
         #sendButton:hover {
             background-color: #3a5bef;
+            transform: scale(1.05);
         }
+
+        /* Media Queries */
         @media (max-width: 600px) {
             #chatbox {
                 height: 400px;
                 padding: 15px;
             }
+
             .message {
                 max-width: 90%;
+            }
+
+            h1 {
+                font-size: 2rem;
             }
         }
     </style>
