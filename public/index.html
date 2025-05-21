@@ -1,238 +1,202 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Assistant UniSign</title>
-    <style>
-        /* Styles généraux et chat stylisé */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f7fa;
-            color: #333;
-            line-height: 1.6;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Assistant UniSign</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f5f7fa;
+      color: #333;
+    }
 
-        h1 {
-            color: #4a6bff;
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 2.5rem;
-        }
+    h1 {
+      text-align: center;
+      color: #4a6bff;
+      margin-bottom: 30px;
+    }
 
-        #chat-container {
-            background-color: white;
-            border-radius: 15px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
+    #chat-container {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
 
-        #chatbox {
-            height: 500px;
-            padding: 20px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            scrollbar-width: thin;
-            scrollbar-color: #4a6bff #f5f7fa;
-        }
+    #chatbox {
+      height: 500px;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
 
-        #chatbox::-webkit-scrollbar {
-            width: 8px;
-        }
+    .message {
+      padding: 15px 20px;
+      border-radius: 18px;
+      max-width: 80%;
+      word-wrap: break-word;
+    }
 
-        #chatbox::-webkit-scrollbar-thumb {
-            background-color: #4a6bff;
-            border-radius: 5px;
-        }
+    .user-message {
+      align-self: flex-end;
+      background: #4a6bff;
+      color: white;
+      border-radius: 18px 4px 18px 18px;
+    }
 
-        .message {
-            max-width: 80%;
-            padding: 15px 20px;
-            border-radius: 18px;
-            word-wrap: break-word;
-            font-size: 1rem;
-        }
+    .bot-message {
+      align-self: flex-start;
+      background: #f0f2f5;
+      color: #333;
+      border-radius: 4px 18px 18px 18px;
+    }
 
-        .user-message {
-            align-self: flex-end;
-            background-color: #4a6bff;
-            color: white;
-            border-radius: 18px 4px 18px 18px;
-        }
+    .typing-indicator {
+      font-style: italic;
+      color: #666;
+      align-self: flex-start;
+    }
 
-        .bot-message {
-            align-self: flex-start;
-            background-color: #f0f2f5;
-            color: #333;
-            border-radius: 4px 18px 18px 18px;
-        }
+    .error-message {
+      background: #ffe0e0;
+      color: #b00020;
+      padding: 10px;
+      border-radius: 5px;
+      text-align: center;
+    }
 
-        .typing-indicator {
-            align-self: flex-start;
-            color: #666;
-            font-style: italic;
-            padding: 10px 20px;
-            font-size: 0.9rem;
-        }
+    #input-container {
+      display: flex;
+      padding: 15px;
+      border-top: 1px solid #ccc;
+      background: #f8f9fa;
+    }
 
-        .error-message {
-            color: #d32f2f;
-            background-color: #ffebee;
-            padding: 10px;
-            border-radius: 5px;
-            text-align: center;
-            margin: 10px 0;
-        }
+    #userInput {
+      flex: 1;
+      padding: 12px;
+      border-radius: 25px;
+      border: 1px solid #ddd;
+      outline: none;
+      font-size: 16px;
+    }
 
-        #input-container {
-            display: flex;
-            padding: 15px;
-            background-color: #f8f9fa;
-            border-top: 1px solid #e0e3e7;
-            border-radius: 0 0 15px 15px;
-        }
+    #sendButton {
+      margin-left: 10px;
+      background: #4a6bff;
+      color: white;
+      border: none;
+      padding: 0 25px;
+      border-radius: 25px;
+      font-size: 16px;
+      cursor: pointer;
+    }
 
-        #userInput {
-            flex: 1;
-            padding: 12px 20px;
-            border: 1px solid #ddd;
-            border-radius: 25px;
-            font-size: 16px;
-            outline: none;
-        }
-
-        #userInput:focus {
-            border-color: #4a6bff;
-            box-shadow: 0 0 5px rgba(74, 107, 255, 0.3);
-        }
-
-        #sendButton {
-            background-color: #4a6bff;
-            color: white;
-            border: none;
-            padding: 0 25px;
-            margin-left: 10px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        #sendButton:hover {
-            background-color: #3a5bef;
-            transform: scale(1.05);
-        }
-
-        @media (max-width: 600px) {
-            #chatbox {
-                height: 400px;
-                padding: 15px;
-            }
-
-            .message {
-                max-width: 90%;
-            }
-
-            h1 {
-                font-size: 2rem;
-            }
-        }
-    </style>
+    #sendButton:hover {
+      background: #3a5bef;
+    }
+  </style>
 </head>
 <body>
-    <h1>Assistant UniSign</h1>
-    <div id="chat-container">
-        <div id="chatbox"></div>
-        <div id="input-container">
-            <input type="text" id="userInput" placeholder="Posez votre question..." autocomplete="off">
-            <button id="sendButton">Envoyer</button>
-        </div>
+  <h1>Assistant UniSign</h1>
+
+  <div id="chat-container">
+    <div id="chatbox"></div>
+    <div id="input-container">
+      <input type="text" id="userInput" placeholder="Posez votre question..." autocomplete="off"/>
+      <button id="sendButton">Envoyer</button>
     </div>
+  </div>
 
-    <script>
-        const API_KEY = "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"; // ⚠️ Ne jamais exposer en production
-        const API_URL = "https://api.openai.com/v1/chat/completions";
+  <script>
+    const API_KEY = "sk-..." // ⚠️ NE PAS exposer en production
+    const API_URL = "https://api.openai.com/v1/chat/completions";
 
-        const chatbox = document.getElementById('chatbox');
-        const userInput = document.getElementById('userInput');
-        const sendButton = document.getElementById('sendButton');
+    const chatbox = document.getElementById("chatbox");
+    const userInput = document.getElementById("userInput");
+    const sendButton = document.getElementById("sendButton");
 
-        function addMessage(sender, content, isError = false) {
-            const messageDiv = document.createElement('div');
-            if (isError) {
-                messageDiv.className = 'error-message';
-                messageDiv.textContent = content;
-            } else {
-                messageDiv.className = `${sender}-message message`;
-                messageDiv.innerHTML = content;
-            }
-            chatbox.appendChild(messageDiv);
-            chatbox.scrollTop = chatbox.scrollHeight;
-        }
+    function addMessage(sender, content) {
+      const div = document.createElement("div");
+      div.className = sender + "-message message";
+      div.textContent = content;
+      chatbox.appendChild(div);
+      chatbox.scrollTop = chatbox.scrollHeight;
+      return div;
+    }
 
-        async function typeText(element, text, delay = 20) {
-            for (let i = 0; i < text.length; i++) {
-                element.innerHTML += text[i];
-                element.scrollIntoView({ behavior: 'smooth', block: 'end' });
-                await new Promise(resolve => setTimeout(resolve, delay));
-            }
-        }
+    async function typeText(div, text) {
+      div.textContent = "";
+      for (let i = 0; i < text.length; i++) {
+        div.textContent += text[i];
+        await new Promise(resolve => setTimeout(resolve, 20));
+        chatbox.scrollTop = chatbox.scrollHeight;
+      }
+    }
 
-        async function sendMessage() {
-            const message = userInput.value.trim();
-            if (!message) return;
+    async function sendMessage() {
+      const message = userInput.value.trim();
+      if (!message) return;
 
-            addMessage('user', message);
-            userInput.value = '';
+      addMessage("user", message);
+      userInput.value = "";
 
-            const typingIndicator = document.createElement('div');
-            typingIndicator.className = 'typing-indicator';
-            typingIndicator.textContent = "Assistant rédige sa réponse...";
-            chatbox.appendChild(typingIndicator);
-            chatbox.scrollTop = chatbox.scrollHeight;
+      const typing = document.createElement("div");
+      typing.className = "typing-indicator";
+      typing.textContent = "Assistant rédige sa réponse...";
+      chatbox.appendChild(typing);
+      chatbox.scrollTop = chatbox.scrollHeight;
 
-            try {
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${API_KEY}`
-                    },
-                    body: JSON.stringify({
-                        model: "gpt-3.5-turbo",
-                        messages: [{ role: "user", content: message }],
-                        temperature: 0.7,
-                        max_tokens: 1000
-                    })
-                });
-
-                const data = await response.json();
-                chatbox.removeChild(typingIndicator);
-
-                const reply = data.choices?.[0]?.message?.content;
-                if (!reply) throw new Error("Réponse vide ou inattendue");
-
-                const botDiv = document.createElement('div');
-                botDiv.className = 'bot-message message';
-                chatbox.appendChild(botDiv);
-                await typeText(botDiv, reply);
-
-            } catch (error) {
-                chatbox.removeChild(typingIndicator);
-                addMessage('bot', `Erreur : ${error.message}`, true);
-            }
-        }
-
-        sendButton.addEventListener('click', sendMessage);
-        userInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') sendMessage();
+      try {
+        const response = await fetch(API_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${API_KEY}`,
+          },
+          body: JSON.stringify({
+            model: "gpt-3.5-turbo",
+            messages: [{ role: "user", content: message }],
+            temperature: 0.7,
+            max_tokens: 1000
+          }),
         });
-    </script>
+
+        const data = await response.json();
+        chatbox.removeChild(typing);
+        console.log(data);
+
+        const reply = data?.choices?.[0]?.message?.content;
+        if (!reply) {
+          throw new Error("Réponse vide ou invalide.");
+        }
+
+        const botDiv = addMessage("bot", ""); // div vide à remplir progressivement
+        await typeText(botDiv, reply);
+
+      } catch (err) {
+        chatbox.removeChild(typing);
+        const errorDiv = document.createElement("div");
+        errorDiv.className = "error-message";
+        errorDiv.textContent = "Erreur : " + err.message;
+        chatbox.appendChild(errorDiv);
+        chatbox.scrollTop = chatbox.scrollHeight;
+      }
+    }
+
+    sendButton.addEventListener("click", sendMessage);
+    userInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") sendMessage();
+    });
+  </script>
 </body>
 </html>
+
