@@ -5,7 +5,104 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Assistant UniSign</title>
   <style>
-    /* Ton CSS inchangé */
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f5f7fa;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      color: #4a6bff;
+      margin-bottom: 30px;
+    }
+
+    #chat-container {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    #chatbox {
+      height: 500px;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .message {
+      padding: 15px 20px;
+      border-radius: 18px;
+      max-width: 80%;
+      word-wrap: break-word;
+    }
+
+    .user-message {
+      align-self: flex-end;
+      background: #4a6bff;
+      color: white;
+      border-radius: 18px 4px 18px 18px;
+    }
+
+    .bot-message {
+      align-self: flex-start;
+      background: #f0f2f5;
+      color: #333;
+      border-radius: 4px 18px 18px 18px;
+    }
+
+    .typing-indicator {
+      font-style: italic;
+      color: #666;
+      align-self: flex-start;
+    }
+
+    .error-message {
+      background: #ffe0e0;
+      color: #b00020;
+      padding: 10px;
+      border-radius: 5px;
+      text-align: center;
+    }
+
+    #input-container {
+      display: flex;
+      padding: 15px;
+      border-top: 1px solid #ccc;
+      background: #f8f9fa;
+    }
+
+    #userInput {
+      flex: 1;
+      padding: 12px;
+      border-radius: 25px;
+      border: 1px solid #ddd;
+      outline: none;
+      font-size: 16px;
+    }
+
+    #sendButton {
+      margin-left: 10px;
+      background: #4a6bff;
+      color: white;
+      border: none;
+      padding: 0 25px;
+      border-radius: 25px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    #sendButton:hover {
+      background: #3a5bef;
+    }
   </style>
 </head>
 <body>
@@ -20,7 +117,7 @@
   </div>
 
   <script>
-    const API_KEY = "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"; // NE PAS exposer en production
+    const API_KEY = "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"; // ⚠️ NE PAS exposer en production
     const API_URL = "https://api.openai.com/v1/chat/completions";
 
     const chatbox = document.getElementById("chatbox");
@@ -30,16 +127,16 @@
     function addMessage(sender, content) {
       const div = document.createElement("div");
       div.className = sender + "-message message";
-      div.innerText = content; // innerText pour meilleure compatibilité
+      div.textContent = content;
       chatbox.appendChild(div);
       chatbox.scrollTop = chatbox.scrollHeight;
       return div;
     }
 
     async function typeText(div, text) {
-      div.innerText = "";
+      div.textContent = "";
       for (let i = 0; i < text.length; i++) {
-        div.innerText += text[i];
+        div.textContent += text[i];
         await new Promise(resolve => setTimeout(resolve, 20));
         chatbox.scrollTop = chatbox.scrollHeight;
       }
@@ -51,10 +148,12 @@
 
       addMessage("user", message);
       userInput.value = "";
+      userInput.disabled = true;
+      sendButton.disabled = true;
 
       const typing = document.createElement("div");
       typing.className = "typing-indicator";
-      typing.innerText = "Assistant rédige sa réponse...";
+      typing.textContent = "Assistant rédige sa réponse...";
       chatbox.appendChild(typing);
       chatbox.scrollTop = chatbox.scrollHeight;
 
@@ -74,32 +173,33 @@
         });
 
         if (!response.ok) {
-          const errorText = await response.text();
-          throw new Error(`Erreur API OpenAI: ${response.status} - ${errorText}`);
+          const errData = await response.json();
+          throw new Error(`${response.status} - ${errData.error.message}`);
         }
 
         const data = await response.json();
         chatbox.removeChild(typing);
-        console.log("Réponse OpenAI:", data);
+        console.log(data);
 
         const reply = data?.choices?.[0]?.message?.content;
         if (!reply) {
           throw new Error("Réponse vide ou invalide.");
         }
 
-        const botDiv = addMessage("bot", ""); // div vide à remplir progressivement
+        const botDiv = addMessage("bot", "");
         await typeText(botDiv, reply);
 
       } catch (err) {
-        if (chatbox.contains(typing)) {
-          chatbox.removeChild(typing);
-        }
+        chatbox.removeChild(typing);
         const errorDiv = document.createElement("div");
         errorDiv.className = "error-message";
-        errorDiv.innerText = "Erreur : " + err.message;
+        errorDiv.textContent = "Erreur : " + err.message;
         chatbox.appendChild(errorDiv);
         chatbox.scrollTop = chatbox.scrollHeight;
-        console.error(err);
+      } finally {
+        userInput.disabled = false;
+        sendButton.disabled = false;
+        userInput.focus();
       }
     }
 
