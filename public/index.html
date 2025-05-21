@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Assistant UniSign</title>
     <style>
-        /* Global Styling */
+        /* Styles généraux et chat stylisé */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             max-width: 800px;
@@ -23,7 +23,6 @@
             font-size: 2.5rem;
         }
 
-        /* Chat Container */
         #chat-container {
             background-color: white;
             border-radius: 15px;
@@ -33,7 +32,6 @@
             flex-direction: column;
         }
 
-        /* Chatbox Styling */
         #chatbox {
             height: 500px;
             padding: 20px;
@@ -52,10 +50,6 @@
         #chatbox::-webkit-scrollbar-thumb {
             background-color: #4a6bff;
             border-radius: 5px;
-        }
-
-        #chatbox::-webkit-scrollbar-track {
-            background-color: #f5f7fa;
         }
 
         .message {
@@ -97,7 +91,6 @@
             margin: 10px 0;
         }
 
-        /* Input Container */
         #input-container {
             display: flex;
             padding: 15px;
@@ -113,7 +106,6 @@
             border-radius: 25px;
             font-size: 16px;
             outline: none;
-            transition: border 0.3s, box-shadow 0.3s;
         }
 
         #userInput:focus {
@@ -130,7 +122,6 @@
             border-radius: 25px;
             cursor: pointer;
             font-size: 16px;
-            transition: background-color 0.3s, transform 0.2s;
         }
 
         #sendButton:hover {
@@ -138,7 +129,6 @@
             transform: scale(1.05);
         }
 
-        /* Media Queries */
         @media (max-width: 600px) {
             #chatbox {
                 height: 400px;
@@ -166,7 +156,7 @@
     </div>
 
     <script>
-        const API_KEY = "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"; // ⚠️ à ne pas exposer en production
+        const API_KEY = "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"; // ⚠️ Ne jamais exposer en production
         const API_URL = "https://api.openai.com/v1/chat/completions";
 
         const chatbox = document.getElementById('chatbox');
@@ -184,6 +174,14 @@
             }
             chatbox.appendChild(messageDiv);
             chatbox.scrollTop = chatbox.scrollHeight;
+        }
+
+        async function typeText(element, text, delay = 20) {
+            for (let i = 0; i < text.length; i++) {
+                element.innerHTML += text[i];
+                element.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                await new Promise(resolve => setTimeout(resolve, delay));
+            }
         }
 
         async function sendMessage() {
@@ -207,8 +205,8 @@
                         'Authorization': `Bearer ${API_KEY}`
                     },
                     body: JSON.stringify({
-                        model: "command-r",
-                        message: message,
+                        model: "gpt-3.5-turbo",
+                        messages: [{ role: "user", content: message }],
                         temperature: 0.7,
                         max_tokens: 1000
                     })
@@ -217,11 +215,14 @@
                 const data = await response.json();
                 chatbox.removeChild(typingIndicator);
 
-                if (!data?.text) {
-                    throw new Error("Réponse vide ou inattendue");
-                }
+                const reply = data.choices?.[0]?.message?.content;
+                if (!reply) throw new Error("Réponse vide ou inattendue");
 
-                addMessage('bot', data.text);
+                const botDiv = document.createElement('div');
+                botDiv.className = 'bot-message message';
+                chatbox.appendChild(botDiv);
+                await typeText(botDiv, reply);
+
             } catch (error) {
                 chatbox.removeChild(typingIndicator);
                 addMessage('bot', `Erreur : ${error.message}`, true);
@@ -235,4 +236,3 @@
     </script>
 </body>
 </html>
-
